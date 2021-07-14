@@ -1,0 +1,6 @@
+dataset:
+  dongfeng_pointer:
+    name: 'test'
+    img_path: "./sample/images"
+    anno_path: "./sample/label"    # directory or .json file path
+    extension: []
