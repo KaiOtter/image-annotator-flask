@@ -10,7 +10,7 @@ A lightweight version for deployment image annotator on server. Without database
 flask, tqdm, yaml, PIL, etc.
 
 ## UI
-![page]("./src/pic/a.jpg")
+![page](src/pic/a.jpg)
 
 ## How to use?
 learn from VIA image annotator version 3 
