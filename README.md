@@ -1,6 +1,10 @@
 # image-annotator-flask
 A customized version of VIA image annotator which supports server deployment (python-flask backend).
 
+## Description
+在VIA的图像标注工具上做了升级，增加了flask后端。没用数据库，只配置文件夹来管理数据。增加了自动保存和逐张加载的功能。
+
+A lightweight version for deployment image annotator on server. Without database plugin, it only uses a config file with directory paths. Auto-save and download images one by one when browse.
 
 ## Requirements
 flask, tqdm, yaml, PIL, etc.
