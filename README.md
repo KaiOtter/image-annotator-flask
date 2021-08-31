@@ -20,8 +20,12 @@ https://www.robots.ox.ac.uk/~vgg/software/via/
 ## Start
 run with script run.sh
 
+## Update History
+    2021.08.31, 1. 增加了数据的users属性，根据用户名显示可用的数据
+                2. 修复了select选择图片未能自动加载的bug
+                3. 增加了voc与本数据格式（via）之间的转换工具
 
 ## TODO
-- [ ] 用户管理系统和任务分割 (User management system / tasks split)
-- [ ] 图片序列变化后自动更新标注文件 (Update annotation json file when images are modified by someone automatically)
-- [ ] 支持一键转化输出voc/coco等格式 (Support convert annotation file to voc/coco or any other formats by one-click)
+- [ ] 在服务器端的每个样本标注单独保存 (Save annotation file separately)
+- [ ] 支持一键转化输出coco等格式 (Support convert annotation file to coco or any other formats by one-click)
+- [ ] 支持图片分布在多个目录（Support read images of one dataset from multi-directory）

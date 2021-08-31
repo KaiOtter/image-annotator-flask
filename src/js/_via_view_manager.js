@@ -73,9 +73,28 @@ _via_view_manager.prototype._on_pname_change = function (e) {
 
 _via_view_manager.prototype._on_view_selector_change = function (e) {
     var vid = e.target.options[e.target.selectedIndex].value;
-    if (vid !== this.va.vid) {
-        this.va.view_show(vid);
+    let fid = (this.d.store.view[vid].fid_list);
+    var arg = window.location.search;
+    var img_blob;
+    if (this.d.file_ref[fid] == undefined) {
+        let fname = this.d.store.file[fid].fname;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/pullImg" + arg + '&f=' + fname,
+            async: false,                   //改为同步方式
+            beforeSend: function () {
+            },
+            success: function (result) {
+                img_blob = base64toBlob(result.img[0].image, 'image/JPEG');
+            },
+            error: function () {
+                alert('fail to load images from server!');
+            }
+        });
+        this.d.file_ref[fid] = img_blob;
     }
+    this.va.view_show(vid);
 }
 
 _via_view_manager.prototype._on_next_view = function () {

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta name="author" content="Kaidi Chen">
     <meta charset="utf-8">
     <title>标注工具</title>
@@ -17,31 +16,41 @@
 <script>
     //动态生成下拉框选项
     $(document).ready(function () {
-        var data = [];
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "/dataInfo",
-            async: false,                   //改为同步方式
-            beforeSend: function () {
-            },
-            success: function (result) {
-                for (let i = 0; i < result.length; ++i) {
-                    data.push([result[i]['key'], result[i]['name']])
+        $(".field").change(function () {
+            var data = [];
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/dataInfo?u=" + $('#username').val(),
+                async: false,                   //改为同步方式
+                beforeSend: function () {
+                },
+                success: function (result) {
+                    for (let i = 0; i < result.length; ++i) {
+                        data.push([result[i]['key'], result[i]['name']])
+                    }
+                    ;
+                },
+                error: function () {
+                    alert('fail to load dataset info!');
                 }
-                ;
-            },
-            error: function () {
-                alert('fail to load dataset info!');
+            });
+
+            if (data.length == 0) {
+                $("#data_select option").remove();
+                if ($('#username').val().length > 0){
+                    alert($('#username').val() + ' has no dataset!');
+                }
+            } else {
+                var info = ' ';
+
+                $.each(data, function (i, e) {
+                    info += " <option value='" + e[0] + "'> " + e[1] + "</option>";
+                });
+                $("#data_select").append(info);
+                alert('load datasets of ' + $('#username').val() + ' successfully!');
             }
-        });
-
-        var info = ' ';
-
-        $.each(data, function (i, e) {
-            info += " <option value='" + e[0] + "'> " + e[1] + "</option>";
-        });
-        $("#data_select").append(info);
+        })
     });
 
     function jump() {
@@ -58,11 +67,16 @@
 </style>
 
 <div align="center">
+    <div class="div-inline">
+        <form>
+            用户名: <input type="text" class="field" name="user_name" id='username'
+                             style="height:30px;width:120px;text-align:center;"><br>
+        </form>
+    </div>
     <div class='div-inline'>
         <form action="">
             <select name="dataset_select" id="data_select" style="height:35px;width:400px"></select>
         </form>
-
     </div>
     <div class='div-inline'>
         <button type="button" onclick="jump()" style="height:35px;">开始标注</button>

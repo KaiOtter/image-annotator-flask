@@ -24,7 +24,7 @@ def parse(path):
             'z': []
         }
     '''
-    
+
     for obj_id in content['metadata'].keys():
         vid = content['metadata'][obj_id]['vid']
         pts = content['metadata'][obj_id]['xy']
