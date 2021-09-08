@@ -23,16 +23,16 @@ function _via_util_get_svg_button(icon_id, title, id) {
     return el;
 }
 
-function _via_util_get_button(icon_id, title, id, width) {
+function _via_util_get_button(icon_id, inner, title, id, width) {
     var el = document.createElement("BUTTON");
     el.id = icon_id;
     if (width == undefined) {
         el.style = "width:48px; height:24px";
     } else {
-        el.style = "width:{}px; height:24px".format(width);
+        el.style = "width:" + String(width) + "px; height:24px";
     }
 
-    el.innerHTML = 'Load';
+    el.innerHTML = inner;
     el.onmouseover = function over_msg() {
         _via_util_msg_show(title);
     };

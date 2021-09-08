@@ -29,6 +29,7 @@ function _via_view_manager(data, view_annotator, container) {
     this.va.on_event('view_show', this._ID, this._on_event_view_show.bind(this));
     this.va.on_event('view_next', this._ID, this._on_event_view_next.bind(this));
     this.va.on_event('view_prev', this._ID, this._on_event_view_prev.bind(this));
+    this.va.on_event('rot_90',  this._ID, this._on_event_rot_90.bind(this))
 
     this._init_ui_elements();
 }
@@ -115,7 +116,6 @@ _via_view_manager.prototype._on_next_view = function () {
             var arg = window.location.search;
             var img_blob;
 
-
             if (this.d.file_ref[fid] == undefined) {
                 let fname = this.d.store.file[fid].fname;
                 $.ajax({
@@ -184,6 +184,70 @@ _via_view_manager.prototype._on_prev_view = function () {
     }
 }
 
+
+_via_view_manager.prototype._rotate_90 = function () {
+    var vid = this.view_selector.options[this.view_selector.selectedIndex].value;
+    let fid = (this.d.store.view[vid].fid_list);
+    var arg = window.location.search;
+    var img_blob;
+    let clockwise = 1;
+    let fname = this.d.store.file[fid].fname;
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/rotImg" + arg + '&f=' + fname + '&c=' + clockwise,
+        async: false,                   //改为同步方式
+        beforeSend: function () {
+        },
+        success: function (result) {
+            img_blob = base64toBlob(result.img[0].image, 'image/JPEG');
+        },
+        error: function () {
+            alert('fail to load images from server!');
+        }
+    });
+
+    delete this.d.file_object_uri[fid] ;
+    this.d.file_ref[fid] = img_blob;
+    this.d.metadata_delete_bulk(vid, this.d.cache.mid_list[vid]);
+    _via_util_msg_show("Annotation is cleaned");
+    this.va.view_show(vid);
+}
+
+_via_view_manager.prototype._rotate_90_anti = function () {
+    var vid = this.view_selector.options[this.view_selector.selectedIndex].value;
+    let fid = (this.d.store.view[vid].fid_list);
+    var arg = window.location.search;
+    var img_blob;
+
+    let clockwise = 0;
+
+    let fname = this.d.store.file[fid].fname;
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/rotImg" + arg + '&f=' + fname + '&c=' + clockwise,
+        async: false,                   //改为同步方式
+        beforeSend: function () {
+        },
+        success: function (result) {
+            img_blob = base64toBlob(result.img[0].image, 'image/JPEG');
+        },
+        error: function () {
+            alert('fail to load images from server!');
+        }
+    });
+
+    delete this.d.file_object_uri[fid] ;
+    this.d.file_ref[fid] = img_blob;
+    this.d.metadata_delete_bulk(vid, this.d.cache.mid_list[vid]);
+    _via_util_msg_show("Annotation is cleaned");
+    this.va.view_show(vid);
+}
+
+
 _via_view_manager.prototype._on_event_view_show = function (data, event_payload) {
     var vid = event_payload.vid.toString();
     this.view_selector.selectedIndex = -1;
@@ -198,12 +262,17 @@ _via_view_manager.prototype._on_event_view_show = function (data, event_payload)
     }
 }
 
+
 _via_view_manager.prototype._on_event_view_next = function (data, event_payload) {
     this._on_next_view();
 }
 
 _via_view_manager.prototype._on_event_view_prev = function (data, event_payload) {
     this._on_prev_view();
+}
+
+_via_view_manager.prototype._on_event_rot_90 = function (data, event_payload) {
+    this._rotate_90();
 }
 
 _via_view_manager.prototype._on_event_project_loaded = function (data, event_payload) {

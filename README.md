@@ -25,6 +25,7 @@ run with script run.sh
                 2. 修复了select选择图片未能自动加载的bug
                 3. 增加了voc与本数据格式（via）之间的转换工具
 
+    2021.09.08, 1. 增加了旋转图片的功能（服务器数据同步改变）
 ## TODO
 - [ ] 在服务器端的每个样本标注单独保存 (Save annotation file separately)
 - [ ] 支持一键转化输出coco等格式 (Support convert annotation file to coco or any other formats by one-click)

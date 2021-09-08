@@ -92,7 +92,9 @@ def save_json():
 def load_dataset():
     dataKey = request.args.get('d')
     root = dataset_info[dataKey]['img_path']
-    legal_ext = dataset_info[dataKey]['extension']
+    legal_ext = []
+    if dataset_info[dataKey].get('extension') is not None:
+        legal_ext = dataset_info[dataKey]['extension']
 
     result = dict()
     result['img'] = []
@@ -144,6 +146,35 @@ def get_images():
     result['img'] = []
 
     image = Image.open(os.path.join(root, fname))
+
+    output_buffer = BytesIO()
+    image.save(output_buffer, format='JPEG')
+    data = {
+        'image': base64.b64encode(output_buffer.getvalue()).decode('ascii'),
+    }
+    result['img'].append(data)
+
+    return jsonify(result)
+
+
+@app.route('/rotImg', methods=['GET'])
+def rotate_image():
+    dataKey = request.args.get('d')
+    fname = request.args.get('f')
+    isClockWise = request.args.get('c')
+    root = dataset_info[dataKey]['img_path']
+
+    result = dict()
+    result['img'] = []
+
+    image = Image.open(os.path.join(root, fname))
+
+    if int(isClockWise) == 1:
+        image = image.rotate(-90, expand=True)
+    else:
+        image = image.rotate(90, expand=True)
+
+    image.save(os.path.join(root, fname))
 
     output_buffer = BytesIO()
     image.save(output_buffer, format='JPEG')

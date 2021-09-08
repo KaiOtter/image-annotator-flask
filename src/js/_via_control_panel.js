@@ -91,9 +91,23 @@ _via_control_panel.prototype._init = function (type) {
         // this._add_spacer();
     }
 
+    //TODO
+    var rot90_clockwise = _via_util_get_button('micon_rot90', '90°', 'Rotate image 90 degree by clock-wise', 'rot90_clockwise', 36)
+    // rot90_clockwise.addEventListener('click', this.via.vm._on_add_media_server.bind(this.via.vm));
+    rot90_clockwise.addEventListener('click', this.via.vm._rotate_90.bind(this.via.vm));
+    this.c.appendChild(rot90_clockwise);
+
+    var rot90_anticlock = _via_util_get_button('micon_rot90anti', '-90°', 'Rotate image 90 degree by anti-clock-wise', 'rot90_anticlock', 36)
+    rot90_anticlock.addEventListener('click', this.via.vm._rotate_90_anti.bind(this.via.vm));
+    this.c.appendChild(rot90_anticlock);
+
+    // var next_view = _via_util_get_svg_button('micon_navigate_next', 'Show Next File', 'show_next');
+    // next_view.addEventListener('click', this.via.vm._on_next_view.bind(this.via.vm));
+    // this.c.appendChild(next_view);
+
     // this._add_project_share_tools();
 
-    this._add_spacer();
+    // this._add_spacer();
 
     var keyboard = _via_util_get_svg_button('micon_keyboard', '快捷键提示');
     keyboard.addEventListener('click', function () {
@@ -129,7 +143,7 @@ _via_control_panel.prototype._add_view_manager_tools = function () {
     // add_media_local.addEventListener('click', this.via.vm._on_add_media_server.bind(this.via.vm));
     // this.c.appendChild(add_media_local);
 
-    var load_project_server = _via_util_get_button('micon_load', 'Load images and annotations from server', 'load_project_server');
+    var load_project_server = _via_util_get_button('micon_load', 'Load','Load images and annotations from server', 'load_project_server');
     load_project_server.addEventListener('click', this.via.vm._on_add_media_server.bind(this.via.vm));
     this.c.appendChild(load_project_server);
 
